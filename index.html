@@ -29,6 +29,7 @@
 
 	var game = new Phaser.Game(config);
 	var player;
+	var ghouls;
 
 	function preload ()
 	{
@@ -44,7 +45,9 @@
 		this.add.image(400,300,'test');
 
 		player = new Player({scene:this,x:200,y:450});
-		ghoul = new ghoul({scene:this,x:200,y:450});
+		ghouls = this.physics.add.group();
+
+		ghouls.create(new Ghoul({scene:this,x:200,y:450}));
 	}
 
 	function update (){

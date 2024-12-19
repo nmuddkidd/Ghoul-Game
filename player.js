@@ -7,7 +7,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.addToUpdateList();
         this.setInteractive();
         this.scene.physics.world.enable(this);
-        //this.scene.setCollideWorldBounds(true);
+        //this.setCollideWorldBounds(true);
 
         //0 - no direction
         //1 - down/right
@@ -15,7 +15,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.Xmove = 0;
         this.Ymove = 0;
 		
-		this.speed = 15;
+		this.speed = 5000;
 		
         this.keyObjects = this.scene.input.keyboard.addKeys({
 			W:Phaser.Input.Keyboard.KeyCodes.W,
@@ -48,6 +48,7 @@ class Player extends Phaser.GameObjects.Sprite{
 	
     preUpdate(time,delta){
         super.preUpdate(time,delta);
+        console.log(delta);
 		
         if (this.keyObjects.A.isDown){
             this.Xmove = -1;
@@ -66,21 +67,20 @@ class Player extends Phaser.GameObjects.Sprite{
         }
 		
 		if(this.Xmove != 0 && this.Ymove != 0){
-			this.body.setVelocityX(this.Xmove*this.speed*.71*delta);
-			this.body.setVelocityY(this.Ymove*this.speed*.71*delta);
+			this.body.setVelocityX(this.Xmove*this.speed*.71/delta);
+			this.body.setVelocityY(this.Ymove*this.speed*.71/delta);
 		}else{
-			console.log(this.Xmove + " " + this.Ymove);
-			this.body.setVelocityX(this.Xmove*this.speed*delta);
-			this.body.setVelocityY(this.Ymove*this.speed*delta);
+			this.body.setVelocityX(this.Xmove*this.speed/delta);
+			this.body.setVelocityY(this.Ymove*this.speed/delta);
 		}
 
         if(Phaser.Input.Keyboard.JustDown(this.keyObjects.SPACE)){
 			if(this.Xmove != 0 && this.Ymove != 0){
-				this.body.setVelocityX(this.Xmove*this.speed*25*.71*delta);
-				this.body.setVelocityY(this.Ymove*this.speed*25*.71*delta);
+				this.body.setVelocityX(this.Xmove*this.speed*25*.71/delta);
+				this.body.setVelocityY(this.Ymove*this.speed*25*.71/delta);
 			}else{
-				this.body.setVelocityX(this.Xmove*this.speed*25*delta);
-				this.body.setVelocityY(this.Ymove*this.speed*25*delta);
+				this.body.setVelocityX(this.Xmove*this.speed*25/delta);
+				this.body.setVelocityY(this.Ymove*this.speed*25/delta);
 			}
         }
     }
