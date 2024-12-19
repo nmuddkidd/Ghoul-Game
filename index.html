@@ -3,6 +3,7 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
 	<script type="text/javascript" src="player.js"></script>
+	<script type="text/javascript" src="ghoul.js"></script>
 </head>
 <body>
 	<h1>GAME!</h1>
@@ -34,6 +35,7 @@
 		this.load.image('player','assets/player.png');
 		this.load.image('test','assets/test.png');
 		this.load.image('sky', 'assets/sky.png');
+		this.load.image('ghoul','assets/ghoul.png');
 	}
 
 	function create ()
@@ -42,6 +44,7 @@
 		this.add.image(400,300,'test');
 
 		player = new Player({scene:this,x:200,y:450});
+		ghoul = new ghoul({scene:this,x:200,y:450});
 	}
 
 	function update (){
