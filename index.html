@@ -29,7 +29,10 @@
 
 	var game = new Phaser.Game(config);
 	var player;
-	var ghouls;
+	var ghoul;
+	var ghoul1;
+	var ghoul2;
+	var camera;
 
 	function preload ()
 	{
@@ -43,14 +46,22 @@
 	{
 		this.add.image(400,300,'sky');
 		this.add.image(400,300,'test');
+		
+		camera = this.cameras.main;
 
 		player = new Player({scene:this,x:200,y:450});
-		ghouls = this.physics.add.group();
 
-		ghouls.create(new Ghoul({scene:this,x:200,y:450}));
+		ghoul = new Ghoul({scene:this,x:200,y:450});
+		ghoul1 = new Ghoul({scene:this,x:200,y:450});
+		ghoul2 = new Ghoul({scene:this,x:200,y:450});
+
+		camera.startFollow(player,false,.1,.1,0,0);
 	}
 
 	function update (){
+		ghoul.updateLink(player.getPos());
+		ghoul1.updateLink(ghoul.getPos());
+		ghoul2.updateLink(ghoul1.getPos());
 	}
     </script>
 

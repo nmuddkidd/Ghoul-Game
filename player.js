@@ -7,7 +7,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.addToUpdateList();
         this.setInteractive();
         this.scene.physics.world.enable(this);
-        //this.setCollideWorldBounds(true);
+        //super.setCollideWorldBounds(true);
 
         //0 - no direction
         //1 - down/right
@@ -15,7 +15,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.Xmove = 0;
         this.Ymove = 0;
 		
-		this.speed = 5000;
+		this.speed = 4250;
 		
         this.keyObjects = this.scene.input.keyboard.addKeys({
 			W:Phaser.Input.Keyboard.KeyCodes.W,
@@ -24,6 +24,9 @@ class Player extends Phaser.GameObjects.Sprite{
 			D:Phaser.Input.Keyboard.KeyCodes.D,
 			SPACE:Phaser.Input.Keyboard.KeyCodes.SPACE
 		});
+
+		this.debug = this.scene.add.text(10, 10, 'delta: ', { fontSize: '32px', fill: '#000' })
+		this.timer = 0;
 
         /*this.anims.create({
 			key: 'left',
@@ -48,7 +51,6 @@ class Player extends Phaser.GameObjects.Sprite{
 	
     preUpdate(time,delta){
         super.preUpdate(time,delta);
-        console.log(delta);
 		
         if (this.keyObjects.A.isDown){
             this.Xmove = -1;
@@ -66,6 +68,23 @@ class Player extends Phaser.GameObjects.Sprite{
             this.Ymove = 0;
         }
 		
+		if(Phaser.Input.Keyboard.JustDown(this.keyObjects.SPACE) && !this.dash && this.timer > 500){
+			this.dash = true;
+			this.speed *= 3;
+			this.timer = 0;
+        }
+
+		this.timer += delta;
+		if(this.timer>150 && this.dash){
+			this.dash = false;
+			this.speed /= 3;
+		}
+
+		if(this.timer > 100000){
+			this.timer = 1000;
+		}
+		this.debug.setText("delta: "+this.timer)
+
 		if(this.Xmove != 0 && this.Ymove != 0){
 			this.body.setVelocityX(this.Xmove*this.speed*.71/delta);
 			this.body.setVelocityY(this.Ymove*this.speed*.71/delta);
@@ -73,15 +92,9 @@ class Player extends Phaser.GameObjects.Sprite{
 			this.body.setVelocityX(this.Xmove*this.speed/delta);
 			this.body.setVelocityY(this.Ymove*this.speed/delta);
 		}
-
-        if(Phaser.Input.Keyboard.JustDown(this.keyObjects.SPACE)){
-			if(this.Xmove != 0 && this.Ymove != 0){
-				this.body.setVelocityX(this.Xmove*this.speed*25*.71/delta);
-				this.body.setVelocityY(this.Ymove*this.speed*25*.71/delta);
-			}else{
-				this.body.setVelocityX(this.Xmove*this.speed*25/delta);
-				this.body.setVelocityY(this.Ymove*this.speed*25/delta);
-			}
-        }
     }
+
+	getPos () {
+		return {x:this.x,y:this.y};
+	}
 }
